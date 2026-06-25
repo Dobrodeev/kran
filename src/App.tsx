@@ -20,7 +20,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Camera,
-  Users
+  Users,
+  ZoomIn
 } from 'lucide-react';
 import { CRANES, KYIV_ZONES, BLOG_ARTICLES } from './data/cranes';
 import type { Article, Crane } from './types';
@@ -191,6 +192,17 @@ export default function App() {
 
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(initialArticle);
+  const [activeLightboxImage, setActiveLightboxImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveLightboxImage(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Region Selector State
   const [selectedCity, setSelectedCity] = useState('Київ та область');
@@ -706,6 +718,29 @@ export default function App() {
                 <div className="article-body-content" style={{ fontSize: '13px', color: 'var(--text-grey)', lineHeight: '1.6', whiteSpace: 'pre-line' }}>
                   {selectedArticle.content}
                 </div>
+
+                {selectedArticle.gallery && selectedArticle.gallery.length > 0 && (
+                  <div className="article-gallery-container">
+                    <h3 className="article-gallery-title">Приклади виконаних робіт:</h3>
+                    <div className="article-gallery-grid">
+                      {selectedArticle.gallery.map((imgUrl, index) => (
+                        <div 
+                          key={index} 
+                          className="article-gallery-item"
+                          onClick={() => setActiveLightboxImage(imgUrl)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveLightboxImage(imgUrl); }}
+                        >
+                          <img src={imgUrl} alt={`Приклад роботи ${index + 1}`} loading="lazy" />
+                          <div className="article-gallery-overlay">
+                            <ZoomIn size={20} color="#ffffff" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <button 
                   className="btn-secondary" 
@@ -1834,6 +1869,28 @@ export default function App() {
             <span className="tab-label">Контакти</span>
           </button>
         </nav>
+
+        {activeLightboxImage && (
+          <div 
+            className="lightbox-backdrop" 
+            onClick={() => setActiveLightboxImage(null)}
+          >
+            <div className="lightbox-content-wrapper" onClick={(e) => e.stopPropagation()}>
+              <button 
+                className="lightbox-close-btn" 
+                onClick={() => setActiveLightboxImage(null)}
+                aria-label="Закрити"
+              >
+                <X size={24} />
+              </button>
+              <img 
+                src={activeLightboxImage} 
+                alt="Повноекранний перегляд" 
+                className="lightbox-image" 
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
