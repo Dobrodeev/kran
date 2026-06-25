@@ -49,4 +49,5 @@ export interface Article {
   readTime: string;
   date: string;
   image?: string;
+  gallery?: string[];
 }
