@@ -174,6 +174,7 @@ body {
 .header-actions {
   display: flex;
   gap: 8px;
+  position: relative;
 }
 
 .icon-btn {
@@ -265,7 +266,7 @@ body {
 .filter-pill.active {
   background: #FFF9E6;
   border-color: #FFB800;
-  color: #A36B00;
+  color: #7A4F00;
   box-shadow: 0 0 10px rgba(255, 184, 0, 0.1);
 }
 
@@ -1002,6 +1003,7 @@ input:checked + .slider:before {
 }
 
 .carousel-dot {
+  position: relative;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -1010,6 +1012,16 @@ input:checked + .slider:before {
   cursor: pointer;
   padding: 0;
   transition: all 0.2s ease;
+}
+
+.carousel-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
 }
 
 .carousel-dot:hover {
@@ -1318,8 +1330,8 @@ input:checked + .slider:before {
 
 .geo-dropdown {
   position: absolute;
-  top: 52px;
-  right: 180px;
+  top: calc(100% + 8px);
+  left: 0;
   z-index: 110;
   width: 180px;
   display: flex;
@@ -1328,6 +1340,7 @@ input:checked + .slider:before {
   padding: 10px;
   background: #FFFFFF !important;
   border: 1px solid var(--border-color) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* Grids & Columns for Desktop (>= 768px) */
@@ -1668,31 +1681,31 @@ input:checked + .slider:before {
     padding-bottom: 12px;
   }
 
-  /* Position reviews carousel side nav buttons absolutely on the edges */
+  /* Stack calculator form fields vertically on mobile */
+  .form-row {
+    flex-direction: column;
+  }
+
+  /* Reviews carousel: hide nav buttons, rely on swipe */
   .reviews-carousel-container {
     position: relative;
     padding: 0;
   }
 
   .carousel-nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .carousel-nav-btn.prev-btn {
-    left: -8px;
-  }
-
-  .carousel-nav-btn.next-btn {
-    right: -8px;
+    display: none;
   }
 
   .reviews-carousel-viewport {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 4px;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  /* Swipe hint indicator */
+  .carousel-dots {
+    margin-top: 12px;
   }
 }
 

@@ -665,8 +665,9 @@ export default function App() {
           </div>
         </header>
 
-          {activeTab === 'blog' ? (
-            selectedArticle ? (
+        {activeTab === 'blog' ? (
+          <main className="app-main">
+            {selectedArticle ? (
               /* Полноценная отдельная страница статьи для SEO (с H1) */
               <div className="seo-article-page" style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fadeIn 0.3s ease', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -793,7 +794,10 @@ export default function App() {
                 </div>
               </div>
             )
-          ) : activeTab === 'works' ? (
+          }
+          </main>
+        ) : activeTab === 'works' ? (
+          <main className="app-main">
             /* Наші роботи (Окрема сторінка) */
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fadeIn 0.3s ease', textAlign: 'left' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
@@ -838,7 +842,9 @@ export default function App() {
                 Повернутися на головну сторінку
               </button>
             </div>
-          ) : activeTab === 'team' ? (
+          </main>
+        ) : activeTab === 'team' ? (
+          <main className="app-main">
             /* Наша команда (Окрема сторінка) */
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fadeIn 0.3s ease', textAlign: 'left' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
@@ -881,8 +887,10 @@ export default function App() {
                 Повернутися на головну сторінку
               </button>
             </div>
-          ) : (
-            <>
+          </main>
+        ) : (
+          <>
+            <main className="app-main">
 
           {/* 2. Главный баннер (Быстрый подбор) */}
           <section className="hero-section">
@@ -1052,8 +1060,9 @@ export default function App() {
                 
                 <div className="form-row">
                   <div className="form-col">
-                    <label>Обрати Автокран</label>
+                    <label htmlFor="crane-select">Обрати Автокран</label>
                     <select 
+                      id="crane-select"
                       value={selectedCraneId} 
                       onChange={(e) => setSelectedCraneId(e.target.value)}
                     >
@@ -1064,8 +1073,9 @@ export default function App() {
                   </div>
 
                   <div className="form-col">
-                    <label>Години роботи</label>
+                    <label htmlFor="hours-input">Години роботи</label>
                     <input 
+                      id="hours-input"
                       type="number" 
                       min="8" 
                       max="72"
@@ -1077,8 +1087,9 @@ export default function App() {
 
                 <div className="form-row">
                   <div className="form-col">
-                    <label>Доставка</label>
+                    <label htmlFor="delivery-select">Доставка</label>
                     <select 
+                      id="delivery-select"
                       value={insideKp ? 'inside' : 'outside'} 
                       onChange={(e) => {
                         const isInside = e.target.value === 'inside';
@@ -1100,9 +1111,10 @@ export default function App() {
 
                   {!insideKp && (
                     <div className="form-col">
-                      <label>Відстань від КП (км)</label>
+                      <label htmlFor="distance-slider">Відстань від КП (км)</label>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <input 
+                          id="distance-slider"
                           type="range" 
                           min="1" 
                           max="100" 
@@ -1151,6 +1163,7 @@ export default function App() {
                     <MapPin size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-grey)', zIndex: 2 }} />
                     <input 
                       type="text" 
+                      aria-label="Введіть адресу доставки..."
                       placeholder="Введіть адресу доставки..." 
                       value={addressSearchQuery}
                       onChange={(e) => setAddressSearchQuery(e.target.value)}
@@ -1511,7 +1524,9 @@ export default function App() {
             </div>
           </section>
 
-          {/* 6. Footer (Подвал экрана) */}
+        </main>
+
+        {/* 6. Footer (Подвал экрана) */}
           <footer id="contacts" style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '20px', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {/* Social Links Row */}
             <div className="footer-social-row" style={{ display: 'flex', justifyContent: 'center', gap: '16px', margin: '4px 0' }}>
@@ -1528,7 +1543,7 @@ export default function App() {
             <span style={{ fontSize: '11px', color: 'var(--text-grey)' }}>
               © 2026 Оренда автокранів Kyiv-Crane-Pro. Всі права захищені.
             </span>
-            <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: '10px', color: 'var(--text-grey)' }}>
               Розроблено Mobile-First • Premium Industrial System
             </span>
           </footer>
@@ -1568,10 +1583,11 @@ export default function App() {
                   {/* Contact input fields */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <div className="form-col">
-                      <label>Ваше ім'я</label>
+                      <label htmlFor="booking-name">Ваше ім'я</label>
                       <div style={{ position: 'relative' }}>
                         <User size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-grey)' }} />
                         <input 
+                          id="booking-name"
                           type="text" 
                           placeholder="Олексій" 
                           style={{ paddingLeft: '36px' }}
@@ -1584,10 +1600,11 @@ export default function App() {
                     </div>
 
                     <div className="form-col">
-                      <label>Контактний телефон</label>
+                      <label htmlFor="booking-phone">Контактний телефон</label>
                       <div style={{ position: 'relative' }}>
                         <PhoneCall size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-grey)' }} />
                         <input 
+                          id="booking-phone"
                           type="tel" 
                           placeholder="+380 97 123 4567" 
                           style={{ paddingLeft: '36px' }}
@@ -1600,10 +1617,11 @@ export default function App() {
                     </div>
 
                     <div className="form-col">
-                      <label>Адреса подачі автокрана</label>
+                      <label htmlFor="booking-address">Адреса подачі автокрана</label>
                       <div style={{ position: 'relative' }}>
                         <MapPin size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-grey)' }} />
                         <input 
+                          id="booking-address"
                           type="text" 
                           placeholder="Адреса доставки крана..." 
                           style={{ paddingLeft: '36px' }}
@@ -1615,8 +1633,9 @@ export default function App() {
                     </div>
 
                     <div className="form-col">
-                      <label>Бажана дата роботи</label>
+                      <label htmlFor="booking-date">Бажана дата роботи</label>
                       <input 
+                        id="booking-date"
                         type="date" 
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
