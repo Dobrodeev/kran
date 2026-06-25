@@ -211,22 +211,25 @@ export default function App() {
       document.body.style.overflow = 'hidden';
       lastFocusedElement.current = document.activeElement as HTMLElement;
       
-      // Focus the close button on the next tick
       const timer = setTimeout(() => {
         closeButtonRef.current?.focus();
       }, 50);
-      return () => clearTimeout(timer);
+      
+      return () => {
+        clearTimeout(timer);
+        document.body.style.overflow = '';
+      };
     } else {
       document.body.style.overflow = '';
-      // Restore focus to the originating item
       if (lastFocusedElement.current) {
         lastFocusedElement.current.focus();
       }
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [activeLightboxImage]);
+
+  useEffect(() => {
+    setActiveLightboxImage(null);
+  }, [selectedArticle]);
 
   // Region Selector State
   const [selectedCity, setSelectedCity] = useState('Київ та область');
@@ -486,6 +489,7 @@ export default function App() {
     const handlePopState = () => {
       const path = window.location.pathname;
       setSelectedArticle(null);
+      setActiveLightboxImage(null);
       if (path === '/' || path === '') {
         setActiveTab('catalog');
       } else if (path === '/blog') {
