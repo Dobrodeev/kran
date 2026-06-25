@@ -9,6 +9,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const serviceAccountPath = path.resolve(__dirname, '../kran-kiev-ua-firebase-adminsdk-fbsvc-50d930dc7d.json');
+
+if (!fs.existsSync(serviceAccountPath)) {
+  console.error(`Error: Service account file not found at: ${serviceAccountPath}`);
+  console.error('Please ensure the kran-kiev-ua-firebase-adminsdk-fbsvc-50d930dc7d.json file is in the root directory.');
+  process.exit(1);
+}
+
 const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
 
 initializeApp({
