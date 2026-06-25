@@ -1867,9 +1867,9 @@ input:checked + .slider:before {
 }
 
 .lightbox-close-btn {
-  position: absolute;
-  top: -54px;
-  right: 0;
+  position: fixed;
+  top: 16px;
+  right: 16px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -1887,14 +1887,6 @@ input:checked + .slider:before {
 .lightbox-close-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: scale(1.05);
-}
-
-@media (min-width: 768px) {
-  .lightbox-close-btn {
-    top: 16px;
-    right: 16px;
-    position: fixed;
-  }
 }
 
 @keyframes lightboxFadeIn {

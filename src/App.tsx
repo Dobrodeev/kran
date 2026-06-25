@@ -204,6 +204,17 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    if (activeLightboxImage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [activeLightboxImage]);
+
   // Region Selector State
   const [selectedCity, setSelectedCity] = useState('Київ та область');
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
@@ -730,7 +741,12 @@ export default function App() {
                           onClick={() => setActiveLightboxImage(imgUrl)}
                           role="button"
                           tabIndex={0}
-                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveLightboxImage(imgUrl); }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setActiveLightboxImage(imgUrl);
+                            }
+                          }}
                         >
                           <img src={imgUrl} alt={`Приклад роботи ${index + 1}`} loading="lazy" />
                           <div className="article-gallery-overlay">
