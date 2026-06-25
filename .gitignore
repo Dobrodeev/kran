@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production / Build
+dist/
+build/
+
+# IDE / System
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local env / credentials
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.json.local
+kran-kiev-ua-firebase-adminsdk-fbsvc-50d930dc7d.json
+serviceAccountKey.json
+
+# Temporary files
+sdd/
+temp/
+tmp/
+*.zip
+
