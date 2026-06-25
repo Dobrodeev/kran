@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   MapPin, 
   Phone, 
@@ -193,6 +193,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(initialArticle);
   const [activeLightboxImage, setActiveLightboxImage] = useState<string | null>(null);
+  const lastFocusedElement = useRef<HTMLElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -207,8 +209,19 @@ export default function App() {
   useEffect(() => {
     if (activeLightboxImage) {
       document.body.style.overflow = 'hidden';
+      lastFocusedElement.current = document.activeElement as HTMLElement;
+      
+      // Focus the close button on the next tick
+      const timer = setTimeout(() => {
+        closeButtonRef.current?.focus();
+      }, 50);
+      return () => clearTimeout(timer);
     } else {
       document.body.style.overflow = '';
+      // Restore focus to the originating item
+      if (lastFocusedElement.current) {
+        lastFocusedElement.current.focus();
+      }
     }
     return () => {
       document.body.style.overflow = '';
@@ -1888,11 +1901,21 @@ export default function App() {
 
         {activeLightboxImage && (
           <div 
+            role="dialog"
+            aria-modal="true"
+            aria-label="Перегляд зображення"
             className="lightbox-backdrop" 
             onClick={() => setActiveLightboxImage(null)}
+            onKeyDown={(e) => {
+              if (e.key === 'Tab') {
+                e.preventDefault();
+                closeButtonRef.current?.focus();
+              }
+            }}
           >
             <div className="lightbox-content-wrapper" onClick={(e) => e.stopPropagation()}>
               <button 
+                ref={closeButtonRef}
                 className="lightbox-close-btn" 
                 onClick={() => setActiveLightboxImage(null)}
                 aria-label="Закрити"
