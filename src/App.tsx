@@ -895,7 +895,7 @@ export default function App() {
           {/* 2. Главный баннер (Быстрый подбор) */}
           <section className="hero-section">
             <h1 className="hero-title">Оренда автокранів в Києві. Подача від 2 годин.</h1>
-            <p className="hero-subtitle">Швидкий підбір техніки под будь-які індустріальні та будівельні завдання.</p>
+            <p className="hero-subtitle">Швидкий підбір техніки під будь-які індустріальні та будівельні завдання.</p>
           </section>
 
           {/* Smart Filters Block */}
