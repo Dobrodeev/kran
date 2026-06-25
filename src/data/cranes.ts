@@ -125,7 +125,13 @@ export const BLOG_ARTICLES: Article[] = [
 Наші спеціалісти готові безкоштовно проконсультувати вас телефоном та розрахувати точну вартість під ваші індивідуальні завдання.`,
     readTime: '3 хв читання',
     date: '23 Червня, 2026',
-    image: '/crane_order_guide.png'
+    image: '/crane_order_guide.png',
+    gallery: [
+      'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&h=600&fit=crop'
+    ]
   },
   {
     id: 'rent-kyiv',
@@ -145,7 +151,13 @@ export const BLOG_ARTICLES: Article[] = [
 Ми працюємо повністю офіційно з наданням усіх бухгалтерських документів. Оплата можлива за безготівковим розрахунком з ПДВ. Ціна фіксується в договорі перед початком робіт і не змінюється під час виконання замовлення.`,
     readTime: '4 хв читання',
     date: '21 Червня, 2026',
-    image: '/crane_kyiv_center.png'
+    image: '/crane_kyiv_center.png',
+    gallery: [
+      'https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1568285634125-9be66fb0ab37?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?w=800&h=600&fit=crop'
+    ]
   },
   {
     id: 'restricted-zones',
@@ -167,6 +179,12 @@ export const BLOG_ARTICLES: Article[] = [
 Будь ласка, перевіряйте стан під'їзних шляхів та робочого майданчика заздалегідь, щоб уникнути простою техніки!`,
     readTime: '5 хв читання',
     date: '19 Червня, 2026',
-    image: '/crane_safety_zones.png'
+    image: '/crane_safety_zones.png',
+    gallery: [
+      'https://images.unsplash.com/photo-1473163928189-364b2c4e1135?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=800&h=600&fit=crop'
+    ]
   }
 ];
