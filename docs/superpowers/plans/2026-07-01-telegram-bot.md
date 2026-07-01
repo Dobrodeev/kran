@@ -918,6 +918,7 @@ import { setPaused } from "../conversation/conversationStore";
 import { notifyAdminNewBooking } from "../admin/notifications";
 import { sendBookingInvoice } from "../payment/liqpayInvoice";
 import { config } from "../config";
+import { Crane, Booking } from "../types";
 
 export interface ToolContext {
   chatId: string;
@@ -995,6 +996,33 @@ export const toolDeclarations: FunctionDeclaration[] = [
   },
 ];
 
+interface ResolvedBookingWindow {
+  crane: Crane;
+  startAt: Date;
+  endAt: Date;
+  existing: Booking[];
+}
+
+async function validateAndResolveBookingWindow(
+  craneId: string,
+  startAtRaw: string,
+  endAtRaw: string,
+  excludeBookingId?: string
+): Promise<{ ok: true; window: ResolvedBookingWindow } | { ok: false; error: string }> {
+  const startAt = parseIsoDateTime(startAtRaw);
+  const endAt = parseIsoDateTime(endAtRaw);
+  if (!startAt || !endAt) return { ok: false, error: "invalid_date_format" };
+
+  const rangeCheck = isValidBookingRange(startAt, endAt, new Date());
+  if (!rangeCheck.valid) return { ok: false, error: rangeCheck.reason ?? "invalid_range" };
+
+  const crane = await getCrane(craneId);
+  if (!crane) return { ok: false, error: "crane_not_found" };
+
+  const existing = (await listActiveBookingsForCrane(craneId)).filter((b) => b.id !== excludeBookingId);
+  return { ok: true, window: { crane, startAt, endAt, existing } };
+}
+
 export async function executeTool(
   name: string,
   args: Record<string, unknown>,
@@ -1002,28 +1030,17 @@ export async function executeTool(
 ): Promise<Record<string, unknown>> {
   switch (name) {
     case "check_availability": {
-      const craneId = String(args.craneId);
-      const startAt = parseIsoDateTime(String(args.startAt));
-      const endAt = parseIsoDateTime(String(args.endAt));
-      if (!startAt || !endAt) return { error: "invalid_date_format" };
-      const rangeCheck = isValidBookingRange(startAt, endAt, new Date());
-      if (!rangeCheck.valid) return { error: rangeCheck.reason };
-      const crane = await getCrane(craneId);
-      if (!crane) return { error: "crane_not_found" };
-      const existing = await listActiveBookingsForCrane(craneId);
+      const resolved = await validateAndResolveBookingWindow(String(args.craneId), String(args.startAt), String(args.endAt));
+      if (!resolved.ok) return { error: resolved.error };
+      const { crane, startAt, endAt, existing } = resolved.window;
       const available = !hasOverlap({ startAt, endAt }, existing);
       return { available, price: computePrice(crane.hourlyRate, crane.minHours, startAt, endAt) };
     }
     case "create_booking": {
       const craneId = String(args.craneId);
-      const startAt = parseIsoDateTime(String(args.startAt));
-      const endAt = parseIsoDateTime(String(args.endAt));
-      if (!startAt || !endAt) return { error: "invalid_date_format" };
-      const rangeCheck = isValidBookingRange(startAt, endAt, new Date());
-      if (!rangeCheck.valid) return { error: rangeCheck.reason };
-      const crane = await getCrane(craneId);
-      if (!crane) return { error: "crane_not_found" };
-      const existing = await listActiveBookingsForCrane(craneId);
+      const resolved = await validateAndResolveBookingWindow(craneId, String(args.startAt), String(args.endAt));
+      if (!resolved.ok) return { error: resolved.error };
+      const { crane, startAt, endAt, existing } = resolved.window;
       if (hasOverlap({ startAt, endAt }, existing)) return { error: "not_available" };
       const price = computePrice(crane.hourlyRate, crane.minHours, startAt, endAt);
       const booking = await createBooking({
@@ -1040,16 +1057,16 @@ export async function executeTool(
     }
     case "reschedule_booking": {
       const bookingId = String(args.bookingId);
-      const newStartAt = parseIsoDateTime(String(args.newStartAt));
-      const newEndAt = parseIsoDateTime(String(args.newEndAt));
-      if (!newStartAt || !newEndAt) return { error: "invalid_date_format" };
-      const rangeCheck = isValidBookingRange(newStartAt, newEndAt, new Date());
-      if (!rangeCheck.valid) return { error: rangeCheck.reason };
       const booking = await getBooking(bookingId);
       if (!booking) return { error: "booking_not_found" };
-      const crane = await getCrane(booking.craneId);
-      if (!crane) return { error: "crane_not_found" };
-      const existing = (await listActiveBookingsForCrane(booking.craneId)).filter((b) => b.id !== bookingId);
+      const resolved = await validateAndResolveBookingWindow(
+        booking.craneId,
+        String(args.newStartAt),
+        String(args.newEndAt),
+        bookingId
+      );
+      if (!resolved.ok) return { error: resolved.error };
+      const { crane, startAt: newStartAt, endAt: newEndAt, existing } = resolved.window;
       if (hasOverlap({ startAt: newStartAt, endAt: newEndAt }, existing)) return { error: "not_available" };
       const price = computePrice(crane.hourlyRate, crane.minHours, newStartAt, newEndAt);
       const result = await updateBookingStatusIfCurrent(
