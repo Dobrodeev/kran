@@ -34,7 +34,20 @@ export const telegramWebhook = onRequest(
       bot = createBot();
     }
 
-    await bot.handleUpdate(req.body);
+    // The update is already marked processed by isDuplicateUpdate above, so a
+    // thrown error here would previously propagate, cause Cloud Functions to
+    // return a 5xx, and any Telegram retry of the SAME update would then be
+    // swallowed as a "duplicate" -- silently losing the message forever.
+    // Catch here so a transient failure is at least logged (visible in Cloud
+    // Functions logs) instead of vanishing with zero trace. We still return
+    // 200 to Telegram: since the update is already marked processed, a 5xx
+    // would only trigger retries that get dropped as duplicates anyway, so
+    // there is no benefit to returning an error status here.
+    try {
+      await bot.handleUpdate(req.body);
+    } catch (error) {
+      console.error(`telegramWebhook: failed to handle update ${updateId}:`, error);
+    }
     res.status(200).send("ok");
   }
 );

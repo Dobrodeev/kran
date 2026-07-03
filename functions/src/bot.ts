@@ -51,5 +51,9 @@ export function createBot(): Telegraf {
   registerAdminActions(bot);
   registerPaymentHandlers(bot);
 
+  bot.catch((err, ctx) => {
+    console.error(`Telegraf handler error for chat ${ctx.chat?.id ?? "unknown"}:`, err);
+  });
+
   return bot;
 }
