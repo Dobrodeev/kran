@@ -27,6 +27,10 @@ export async function notifyAdminNewBooking(bot: Telegraf, booking: Booking, cra
 
 export function registerAdminActions(bot: Telegraf): void {
   bot.action(/^confirm:(.+)$/, async (ctx) => {
+    if (String(ctx.from?.id) !== config.adminChatId) {
+      await ctx.answerCbQuery("Недостатньо прав.");
+      return;
+    }
     const bookingId = ctx.match[1];
     const result = await updateBookingStatusIfCurrent(bookingId, ["pending_confirmation"], "confirmed");
     if (!result.ok) {
@@ -46,6 +50,10 @@ export function registerAdminActions(bot: Telegraf): void {
   });
 
   bot.action(/^decline:(.+)$/, async (ctx) => {
+    if (String(ctx.from?.id) !== config.adminChatId) {
+      await ctx.answerCbQuery("Недостатньо прав.");
+      return;
+    }
     const bookingId = ctx.match[1];
     const result = await updateBookingStatusIfCurrent(bookingId, ["pending_confirmation"], "declined");
     if (!result.ok) {
