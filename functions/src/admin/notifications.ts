@@ -34,7 +34,11 @@ export function registerAdminActions(bot: Telegraf): void {
       return;
     }
     await ctx.answerCbQuery("Підтверджено");
-    await ctx.editMessageText(`${(ctx.callbackQuery as { message?: { text?: string } }).message?.text ?? ""}\n\nСтатус: підтверджено ✅`);
+    try {
+      await ctx.editMessageText(`${(ctx.callbackQuery as { message?: { text?: string } }).message?.text ?? ""}\n\nСтатус: підтверджено ✅`);
+    } catch (error) {
+      // Admin message edit failed, but this is non-critical
+    }
     await bot.telegram.sendMessage(
       result.booking.clientChatId,
       "Вашу бронь підтверджено! Напишіть \"оплатити\" в чаті, щоб перейти до оплати."
@@ -49,7 +53,11 @@ export function registerAdminActions(bot: Telegraf): void {
       return;
     }
     await ctx.answerCbQuery("Відхилено");
-    await ctx.editMessageText(`${(ctx.callbackQuery as { message?: { text?: string } }).message?.text ?? ""}\n\nСтатус: відхилено ❌`);
+    try {
+      await ctx.editMessageText(`${(ctx.callbackQuery as { message?: { text?: string } }).message?.text ?? ""}\n\nСтатус: відхилено ❌`);
+    } catch (error) {
+      // Admin message edit failed, but this is non-critical
+    }
     await bot.telegram.sendMessage(
       result.booking.clientChatId,
       "На жаль, обраний час недоступний. Оберіть, будь ласка, інший."
