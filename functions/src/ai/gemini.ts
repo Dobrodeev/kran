@@ -40,11 +40,20 @@ export async function runAgentTurn(params: {
   let iterations = 0;
 
   while (response.functionCalls && response.functionCalls.length > 0 && iterations < MAX_TOOL_ITERATIONS) {
-    const call = response.functionCalls[0];
-    const result = await executeTool(call.name ?? "", (call.args ?? {}) as Record<string, unknown>, params.ctx);
-    response = await chat.sendMessage({
-      message: [{ functionResponse: { name: call.name ?? "", response: result } }],
-    });
+    const calls = response.functionCalls;
+    const responseParts = await Promise.all(
+      calls.map(async (call) => {
+        const result = await executeTool(call.name ?? "", (call.args ?? {}) as Record<string, unknown>, params.ctx);
+        return {
+          functionResponse: {
+            id: call.id,
+            name: call.name ?? "",
+            response: result,
+          },
+        };
+      })
+    );
+    response = await chat.sendMessage({ message: responseParts });
     iterations += 1;
   }
 
