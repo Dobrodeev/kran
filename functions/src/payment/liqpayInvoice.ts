@@ -40,6 +40,13 @@ export function registerPaymentHandlers(bot: Telegraf): void {
     if (result.ok) {
       await ctx.reply("Оплату отримано, дякуємо! До зустрічі.");
       await bot.telegram.sendMessage(config.adminChatId, `Бронь #${bookingId} оплачена клієнтом.`);
+    } else {
+      // Payment was captured but booking status update failed — notify admin and client
+      await ctx.reply("Ваша оплата отримана. Ми невдовзі підтвердимо замовлення.");
+      await bot.telegram.sendMessage(
+        config.adminChatId,
+        `⚠️ РОЗПЛАТА БЕЗ УЗГОДЖЕННЯ: Бронь #${bookingId}\nПричина помилки: ${result.reason}\nГроші можуть бути захоплені, потрібна ручна перевірка.`
+      );
     }
   });
 }
