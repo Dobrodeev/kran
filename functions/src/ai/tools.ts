@@ -5,6 +5,7 @@ import {
   listActiveBookingsForCrane,
   createBooking,
   getBooking,
+  getLatestBookingForChat,
   updateBookingStatusIfCurrent,
 } from "../booking/bookingRepository";
 import { hasOverlap } from "../booking/availability";
@@ -88,6 +89,15 @@ export const toolDeclarations: FunctionDeclaration[] = [
       type: Type.OBJECT,
       properties: { reason: { type: Type.STRING } },
       required: ["reason"],
+    },
+  },
+  {
+    name: "get_current_booking",
+    description:
+      "Отримати останнє бронювання поточного клієнта, якщо потрібно дізнатись його ID чи статус.",
+    parameters: {
+      type: Type.OBJECT,
+      properties: {},
     },
   },
 ];
@@ -193,6 +203,18 @@ export async function executeTool(
         `Клієнт ${ctx.chatId} потребує уваги диспетчера: ${String(args.reason)}`
       );
       return { escalated: true };
+    }
+    case "get_current_booking": {
+      const booking = await getLatestBookingForChat(ctx.chatId);
+      if (!booking) return { error: "no_booking_found" };
+      return {
+        bookingId: booking.id,
+        status: booking.status,
+        craneId: booking.craneId,
+        startAt: booking.startAt.toISOString(),
+        endAt: booking.endAt.toISOString(),
+        price: booking.price,
+      };
     }
     default:
       return { error: `unknown_tool:${name}` };
