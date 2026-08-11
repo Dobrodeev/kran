@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kran-kiev-ua.web.app/sitemap.xml

@@ -50,4 +50,5 @@ export interface Article {
   date: string;
   image?: string;
   gallery?: string[];
+  author?: string;
 }

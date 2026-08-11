@@ -7,8 +7,129 @@
     <title>Оренда автокранів в Києві | Подача від 2 годин | Kyiv Crane Pro</title>
     <meta name="description" content="Послуги оренди автомобільних кранів Liebherr та XCMG вантажопідйомністю від 16 до 160 тонн у Києві та Київській області. Прозорий онлайн-калькулятор вартості, безкоштовний пропуск у центр міста, робота з ПДВ." />
     <meta name="keywords" content="оренда автокрана київ, оренда крана київ, замовити автокран київ, оренда спецтехніки київ, автокран liebherr київ, автокран xcmg київ" />
+    <link rel="canonical" href="https://kran-kiev-ua.web.app" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kran-kiev-ua.web.app" />
+    <meta property="og:title" content="Оренда автокранів в Києві | Подача від 2 годин | Kyiv Crane Pro" />
+    <meta property="og:description" content="Послуги оренди автомобільних кранів Liebherr та XCMG вантажопідйомністю від 16 до 160 тонн у Києві та Київській області. Прозорий онлайн-калькулятор вартості, безкоштовний пропуск у центр міста, робота з ПДВ." />
+    <meta property="og:image" content="https://kran-kiev-ua.web.app/crane_kyiv_center.png" />
+    <meta property="og:site_name" content="Kyiv Crane Pro" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://kran-kiev-ua.web.app" />
+    <meta property="twitter:title" content="Оренда автокранів в Києві | Подача від 2 годин | Kyiv Crane Pro" />
+    <meta property="twitter:description" content="Послуги оренди автомобільних кранів Liebherr та XCMG вантажопідйомністю від 16 до 160 тонн у Києві та Київській області. Прозорий онлайн-калькулятор вартості, безкоштовний пропуск у центр міста, робота з ПДВ." />
+    <meta property="twitter:image" content="https://kran-kiev-ua.web.app/crane_kyiv_center.png" />
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Structured Data JSON-LD Schema (Organization, LocalBusiness, FAQPage) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://kran-kiev-ua.web.app/#organization",
+          "name": "Kyiv Crane Pro",
+          "url": "https://kran-kiev-ua.web.app",
+          "logo": "https://kran-kiev-ua.web.app/favicon.svg",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+38 (067) 500-00-00",
+            "contactType": "customer service",
+            "areaServed": "UA",
+            "availableLanguage": ["Ukrainian"]
+          }
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://kran-kiev-ua.web.app/#localbusiness",
+          "name": "Kyiv Crane Pro - Оренда Автокранів",
+          "image": "https://kran-kiev-ua.web.app/crane_kyiv_center.png",
+          "url": "https://kran-kiev-ua.web.app",
+          "telephone": "+38 (067) 500-00-00",
+          "priceRange": "UAH",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "вулиця Будівельників, 12",
+            "addressLocality": "Київ",
+            "postalCode": "02000",
+            "addressCountry": "UA"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "50.4501",
+            "longitude": "30.5234"
+          },
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ],
+            "opens": "00:00",
+            "closes": "24:00"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://kran-kiev-ua.web.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Які документи необхідні для укладення договору оренди?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Для юридичних осіб необхідні статутні документи, реквізити компанії та підписаний договір. Для фізичних осіб достатньо надати оригінал паспорта, ідентифікаційний код та внести передоплату."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Чи входить паливо та робота машиніста у вартість зміни?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Так, уся спецтехніка надається в оренду виключно з висококваліфікованими операторами та повністю заправлена дизельним паливом. Жодних додаткових витрат на ПММ чи оплату праці немає."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Як розраховується доставка спецтехніки за межі Києва (КП)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Транспортування автокранів у межах Києва вже включено у вартість першої зміни. При доставці за КП тариф розраховується за ставкою 50 гривень за кілометр пробігу в обидва боки від межі міста."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Чи працюєте ви у нічний час, вихідні та святкові дні?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Компанія Kyiv Crane Pro працює цілодобово, сім днів на тиждень. Ми надаємо автокрани на нічні зміни та у вихідні дні за умови попереднього узгодження для формування графіку операторів."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Що робити, якщо роботи затягнулися і потрібно більше часу?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ви можете легко продовжити оренду крана на додатковий час або наступну зміну. Понаднормова робота понад 8-годинний ліміт оплачується погодинно згідно з тарифом обраної моделі техніки."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -33,3 +33,6 @@ temp/
 tmp/
 *.zip
 
+# Firebase
+.firebase/
+
