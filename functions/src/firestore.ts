@@ -8,7 +8,8 @@ export function getFirestore(): Firestore {
     if (getApps().length === 0) {
       initializeApp();
     }
-    firestoreInstance = getAdminFirestore();
+    // The project's database was created with the ID "default", not the implicit "(default)".
+    firestoreInstance = getAdminFirestore("default");
   }
   return firestoreInstance;
 }
