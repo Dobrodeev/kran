@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { config } from "../config";
 import { toolDeclarations, executeTool, ToolContext } from "./tools";
 import { ConversationMessage } from "../types";
+import { withRetry } from "./retry";
 
 const MODEL_NAME = "gemini-3.8-flash";
 const MAX_TOOL_ITERATIONS = 5;
@@ -37,7 +38,7 @@ export async function runAgentTurn(params: {
     history: params.history.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
   });
 
-  let response = await chat.sendMessage({ message: params.userMessage });
+  let response = await withRetry(() => chat.sendMessage({ message: params.userMessage }));
   let iterations = 0;
 
   while (response.functionCalls && response.functionCalls.length > 0 && iterations < MAX_TOOL_ITERATIONS) {
@@ -65,7 +66,7 @@ export async function runAgentTurn(params: {
         },
       };
     });
-    response = await chat.sendMessage({ message: responseParts });
+    response = await withRetry(() => chat.sendMessage({ message: responseParts }));
     iterations += 1;
   }
 

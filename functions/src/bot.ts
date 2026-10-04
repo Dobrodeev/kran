@@ -51,8 +51,13 @@ export function createBot(): Telegraf {
   registerAdminActions(bot);
   registerPaymentHandlers(bot);
 
-  bot.catch((err, ctx) => {
+  bot.catch(async (err, ctx) => {
     console.error(`Telegraf handler error for chat ${ctx.chat?.id ?? "unknown"}:`, err);
+    if (ctx.chat) {
+      await ctx
+        .reply("Вибачте, сталася тимчасова помилка. Спробуйте, будь ласка, ще раз за хвилину.")
+        .catch((replyErr) => console.error("Failed to send error notice:", replyErr));
+    }
   });
 
   return bot;
