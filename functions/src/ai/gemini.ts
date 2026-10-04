@@ -3,7 +3,7 @@ import { config } from "../config";
 import { toolDeclarations, executeTool, ToolContext } from "./tools";
 import { ConversationMessage } from "../types";
 
-const MODEL_NAME = "gemini-2.5-flash";
+const MODEL_NAME = "gemini-3.8-flash";
 const MAX_TOOL_ITERATIONS = 5;
 
 function buildSystemInstruction(catalogText: string): string {
