@@ -8,10 +8,11 @@ import { BookingStatus } from "../types";
 const CONTACTS_TEXT = [
   "📞 Контакти KranUA",
   "",
-  "Телефон: +380 XX XXX XX XX",
-  "Email: info@kran.kiev.ua",
+  "Телефон: +380 44 000 00 00 (Viber, Telegram)",
+  "Email: info@example.com",
   "Сайт: https://kran.kiev.ua",
-  "Працюємо: Пн–Сб, 8:00–20:00",
+  "Адреса: м. Київ, вул. Прикладна, 1",
+  "Працюємо: Пн–Сб, 8:00–20:00, Нд — за домовленістю",
 ].join("\n");
 
 const MENU_COMMANDS = [
