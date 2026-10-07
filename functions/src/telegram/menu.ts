@@ -42,9 +42,13 @@ function formatDateTime(date: Date): string {
  */
 export function registerMenuCommands(bot: Telegraf): void {
   // Publishes the "Menu" button list once per cold start; failures are non-fatal.
-  bot.telegram
-    .setMyCommands(MENU_COMMANDS)
-    .catch((err) => console.error("Failed to set bot commands:", err));
+  // The private-chat scope is set explicitly because it takes precedence over the
+  // default scope, so a stale list there (e.g. from BotFather) would hide ours.
+  for (const scope of [{ type: "default" }, { type: "all_private_chats" }] as const) {
+    bot.telegram
+      .setMyCommands(MENU_COMMANDS, { scope })
+      .catch((err) => console.error(`Failed to set bot commands (${scope.type}):`, err));
+  }
 
   bot.command("catalog", async (ctx) => {
     const snap = await getFirestore().collection("cranes").get();
