@@ -5,6 +5,7 @@ import { runAgentTurn } from "./ai/gemini";
 import { registerAdminActions } from "./admin/notifications";
 import { registerPaymentHandlers } from "./payment/liqpayInvoice";
 import { getFirestore } from "./firestore";
+import { registerMenuCommands } from "./telegram/menu";
 
 async function getCraneCatalogText(): Promise<string> {
   const snap = await getFirestore().collection("cranes").get();
@@ -21,9 +22,12 @@ export function createBot(): Telegraf {
 
   bot.start(async (ctx) => {
     await ctx.reply(
-      "Вітаю! Я бот KranUA. Розкажіть, яка техніка вам потрібна і на коли — підберу варіант, забронюю і допоможу з оплатою."
+      "Вітаю! Я бот KranUA. Розкажіть, яка техніка вам потрібна і на коли — підберу варіант, забронюю і допоможу з оплатою.\n\n" +
+        "Усі розділи — у кнопці «Меню» внизу ліворуч."
     );
   });
+
+  registerMenuCommands(bot);
 
   bot.on("text", async (ctx) => {
     const chatId = String(ctx.chat.id);
